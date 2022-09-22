@@ -1,0 +1,154 @@
+package exp3;
+import
+        java.util.Scanner;
+class Singers{
+    String name;
+    int rating;
+    int alboms;
+}
+public class RecordCountry {
+    public static void main(String [] args) {
+        Scanner sc = new Scanner(System.in, "cp1251");
+        System.out.println("Введіть кількість співаків => ");
+        int n=sc.nextInt();
+        Singers country[]=new Singers[n];
+        System.out.println("Введіть інформацію про співака: ");
+        for(int i = 0; i < country.length; i++) {
+            sc.nextLine(); // очищення буфера
+            country[i] = new Singers();
+            System.out.print("Ім'я " + (i + 1) + "-го виконавця => ");
+            country[i].name = sc.nextLine();
+            System.out.print("Рейтинг " + (i + 1) + "-го виконавця => ");
+            country[i].rating = sc.nextInt();
+            System.out.print("Кількість випущених альбомів " + (i + 1) + "-го виконавця => ");
+            country[i].alboms = sc.nextInt();
+        }
+        System.out.println("\nХарактеристики співаків:");
+        for(int i = 0; i < country.length; i++) {
+
+            System.out.println(""+country[i].name+"\t"+country[i].rating + "\t" + country[i].alboms);
+
+        }
+        int nommax=0;
+        double max = country[nommax].rating;
+        for (int i = 0; i < country.length; i++) if (country[i].rating>max) {
+            max = country [i]. rating;
+            nommax=i;
+        }
+        System.out.println("\nНайпопулярніший співак за рейтингом :");
+        System.out.println(""+country[nommax].name+"\t"+country[nommax].rating );
+        for (int i = 0; i < country.length-1; i++)
+        for (int j = 0; j < country.length-1-i; j++)
+        if (country[j].rating > country[j+1].rating){
+            Singers rab=country[j];
+            country [j] = country [j + 1];
+            country [j + 1] = rab;
+        }
+        System.out.println("\nВідсортований список за назвою:");
+        for (int i = 0; i < country.length-1; i++)
+        {
+            for (int j = 0; j < country.length-i-1; j++)
+            {
+                if(country[j].name.compareTo(country[j+1].name)<0)
+                {
+                    Singers temp = country[j];
+                    country[j]=country[j+1];
+                    country[j+1]=temp;
+                }
+            }
+
+        }
+        for (int i = 0; i < country.length; i++)
+        {
+            System.out.println(""+country[i].name);
+        }
+
+        double s=0; //сумарна кількість
+        for (int i = 0; i < country.length; i++)
+        s+=country[i].alboms;
+        double sr=s/country.length; ; // середня кількість
+        System.out.println("Середня кількість альбомів =" +sr);
+        System.out.println("\nСпіваки, з кількістью альбомів більше середнього");
+        for (int i = 0; i < country.length; i++) {
+            if (country[i].alboms>sr)
+            System.out.println(country[i].name + "\t" + country[i].rating + "\t"+country[i].alboms );
+        }
+        sc.nextLine();
+        boolean STOP = false;
+        while(!STOP)
+        {
+            System.out.println("\n\n\t ВИБЕРІТЬ ОДНУ З ФУНКЦІЙ:");
+            System.out.println("\n 'find' - поиск по імені, 'repair' - виправлення поля, 'info' - виведення таблиці, 'stop' - закінчити роботу програми");
+            String text = sc.nextLine();
+            switch (text) {
+                case "find":
+                    System.out.println("Введіть ім'я: ");
+                    String nme = sc.nextLine();
+                    int nom = -1;
+                    for (int i = 0; i < country.length; i++)
+                        if (nme.equalsIgnoreCase(country[i].name))
+                            nom = i;
+                    if (nom != -1) {
+                        System.out.println("Така людина є в списку. Це " + country[nom].name+"\t"+country[nom].rating +"\t"+country[nom].alboms);
+                    } else System.out.println("Такої людини немає в списку");
+                    break;
+                case "repair":
+                    System.out.println("Введіть ім'я людини, інформацію якого хочете змінити: ");
+                    nme = sc.nextLine();
+                    nom = -1;
+                    for (int i = 0; i < country.length; i++) {
+                        if (nme.equalsIgnoreCase(country[i].name))
+                            nom = i;
+                    }
+                    if (nom == -1) {
+                        System.out.println("Такої людини немає в списку");
+                    }
+                    else
+                    {
+                        System.out.println("Введіть номер інформації, яку хочете змінити");
+                        System.out.println("\n 1 - Ім'я, 2 - Рейтинг, 3 - Кількість альбомів");
+                        int pole = sc.nextInt();
+                        switch (pole) {
+                            case 1:
+                                System.out.println("Введіть нове им'я: ");
+                                sc.nextLine();
+                                country[nom].name = sc.nextLine();
+                                System.out.println("Им'я змінено!");
+                                break;
+                            case 2:
+                                System.out.println("Введіть новий рейтинг: ");
+                                sc.nextLine();
+                                country[nom].rating = sc.nextInt();
+                                System.out.println("Рейтинг змінено!");
+                                break;
+                            case 3:
+                                System.out.println("Введіть нову кількість альбомів: ");
+                                sc.nextLine();
+                                country[nom].alboms = sc.nextInt();
+                                System.out.println("Кількість альбомів змінено!");
+                                break;
+                        }
+                    }
+                    break;
+                case "info":
+                    System.out.println("Інформація про співаків: ");
+                    for (int i = 0; i < country.length; i++) {
+                        System.out.println(country[i].name+"\t"+country[i].rating +"\t"+country[i].alboms);
+                    }
+                    break;
+                case "stop":
+                    STOP = true;
+                    break;
+                default:
+                    System.out.println("Такої команди немає в списку!");
+                    break;
+
+            }
+        }
+    }
+}
+
+
+
+
+
